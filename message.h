@@ -25,7 +25,7 @@ namespace beacor
 			
 			std::vector<uint8_t> body;
 
-		
+		        
 			size_t size() const
 			{
 				
