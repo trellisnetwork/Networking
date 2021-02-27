@@ -34,27 +34,21 @@ namespace beacor
 			}
 
 		
-
-			template<typename DataType>
+                        template<typename DataType>
 			friend message<T>& operator << (message<T>& msg, const DataType& data)
 			{
 				
 				static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
 
-		
-				size_t i = msg.body.size();
+		                size_t i = msg.body.size();
 
-				
 				msg.body.resize(msg.body.size() + sizeof(DataType));
 
-			
-				std::memcpy(msg.body.data() + i, &data, sizeof(DataType));
+			        std::memcpy(msg.body.data() + i, &data, sizeof(DataType));
 
-				
 				msg.header.size = msg.size();
 
-			
-				return msg;
+			        return msg;
 				
 			}
 
@@ -65,19 +59,15 @@ namespace beacor
 				
 				static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pulled from vector");
 
-				
 				size_t i = msg.body.size() - sizeof(DataType);
+				
+                                std::memcpy(&data, msg.body.data() + i, sizeof(DataType));
 
-				std::memcpy(&data, msg.body.data() + i, sizeof(DataType));
+			        msg.body.resize(i);
 
-			
-				msg.body.resize(i);
+			        msg.header.size = msg.size();
 
-			
-				msg.header.size = msg.size();
-
-			
-				return msg;
+			        return msg;
 				
 			}			
 		};
